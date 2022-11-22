@@ -40,8 +40,12 @@ dependencies:
   equatable: ^2.0.5
   #The library for error handling
   either_dart: ^0.3.0
+  #Http request/response
   http: ^0.13.5
+  #Local data storage
   shared_preferences: ^2.0.15
+  #ServiceLocator
+  get_it: ^7.2.0
 
 
 dev_dependencies:
