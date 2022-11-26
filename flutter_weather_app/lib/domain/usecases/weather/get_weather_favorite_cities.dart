@@ -13,10 +13,12 @@ class GetFavoriteWeatherCities
   GetFavoriteWeatherCities({required this.weatherRepository});
 
   @override
-  Future<Either<Failure, FavoriteCitiesWeatherEntity>> call(
-      CityParams params) async {
-    return await weatherRepository.getFavoriteWeather(CityEntity(
-      cityName: params.cityName,
-    ));
+  Future<Either<Failure, FavoriteCitiesWeatherEntity>> call(CityParams params,
+      [String apiKey = '']) async {
+    return await weatherRepository.getFavoriteWeather(
+        CityEntity(
+          cityName: params.cityName,
+        ),
+        apiKey);
   }
 }

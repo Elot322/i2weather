@@ -10,7 +10,7 @@ class GetMainCity extends UseCase<CityEntity, void> {
   GetMainCity({required this.cityRepository});
 
   @override
-  Future<Either<Failure, CityEntity>> call(params) async {
+  Future<Either<Failure, CityEntity>> call(params, [String apiKey = '']) async {
     return await cityRepository.getCurrentCity();
   }
 }

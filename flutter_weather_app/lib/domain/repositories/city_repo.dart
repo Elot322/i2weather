@@ -6,9 +6,9 @@ import 'package:flutter_weather_app/domain/entities/city_entity.dart';
 abstract class CityRepository {
   //Get/Set current city(Main city)
   Future<Either<Failure, CityEntity>> getCurrentCity();
-  Future<Either<Failure, Right>> setCurrentCity(CityEntity city);
+  Future<Either<Failure, void>> setCurrentCity(CityEntity city);
 
   //Get/Set favorietes cities(List cities on Main screen)
   Future<Either<Failure, List<String>>> getFavoriteCities();
-  Future<Either<Failure, Right>> setFavoriteCity(CityEntity city);
+  Future<Either<Failure, void>> setFavoriteCity(CityEntity city);
 }

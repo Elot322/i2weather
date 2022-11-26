@@ -15,9 +15,9 @@ class CurrentCityWeatherModel extends CurrentWeatherInCityEntity {
       currentTemp: json['main']['temp'],
       feelsLikeTemp: json['main']['feels_like'],
       cloudsPercentage: json['clouds']['all'],
-      windSpeed: json['wind']['speed'],
-      status: json['weather']['main'],
-      description: json['weather']['description'],
+      windSpeed: json['wind']['speed'].toDouble(),
+      status: json['weather'][0]['main'],
+      description: json['weather'][0]['description'],
     );
   }
 }

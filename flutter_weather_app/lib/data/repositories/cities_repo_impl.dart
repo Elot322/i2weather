@@ -1,9 +1,12 @@
+import 'dart:ffi';
+
+import 'package:either_dart/either.dart';
 import 'package:flutter_weather_app/core/error/exception.dart';
 import 'package:flutter_weather_app/data/data_source/local/sities_local_datasource.dart';
 import 'package:flutter_weather_app/data/models/city_model.dart';
 import 'package:flutter_weather_app/domain/entities/city_entity.dart';
 import 'package:flutter_weather_app/core/error/failure.dart';
-import 'package:either_dart/src/either.dart';
+
 import 'package:flutter_weather_app/domain/repositories/city_repo.dart';
 
 class CityRepositoryImpl extends CityRepository {
@@ -22,13 +25,13 @@ class CityRepositoryImpl extends CityRepository {
   }
 
   @override
-  Future<Either<Failure, Right>> setCurrentCity(CityEntity city) async {
+  Future<Either<Failure, void>> setCurrentCity(CityEntity city) async {
     return await _setCurrentCity(CityModel(cityName: city.cityName));
   }
 
   @override
-  Future<Either<Failure, Right>> setFavoriteCity(CityEntity city) async {
-    return await _setCurrentCity(CityModel(cityName: city.cityName));
+  Future<Either<Failure, void>> setFavoriteCity(CityEntity city) async {
+    return await _setFavoriteCity(CityModel(cityName: city.cityName));
   }
 
   Future<Either<Failure, CityModel>> _getCurrentCity() async {
@@ -49,17 +52,19 @@ class CityRepositoryImpl extends CityRepository {
     }
   }
 
-  Future<Either<Failure, Right>> _setCurrentCity(CityModel city) async {
+  Future<Either<Failure, void>> _setCurrentCity(CityModel city) async {
     try {
-      return Right(await citiesLocalDatasource.setMainCity(city));
+      await citiesLocalDatasource.setMainCity(city);
+      return Right(Void);
     } on CacheException {
       return Left(CacheFailure());
     }
   }
 
-  Future<Either<Failure, Right>> _setFavoriteCity(CityModel city) async {
+  Future<Either<Failure, void>> _setFavoriteCity(CityModel city) async {
     try {
-      return Right(await citiesLocalDatasource.addToFavoritiesCities(city));
+      await citiesLocalDatasource.addToFavoritiesCities(city);
+      return Right(Void);
     } on CacheException {
       return Left(CacheFailure());
     }

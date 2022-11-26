@@ -12,9 +12,12 @@ class GetWeatherByCity extends UseCase<CurrentWeatherInCityEntity, CityParams> {
   GetWeatherByCity({required this.weatherRepository});
 
   @override
-  Future<Either<Failure, CurrentWeatherInCityEntity>> call(params) async {
-    return await weatherRepository.getWeather(CityEntity(
-      cityName: params.cityName,
-    ));
+  Future<Either<Failure, CurrentWeatherInCityEntity>> call(params,
+      [String apiKey = '']) async {
+    return await weatherRepository.getWeather(
+        CityEntity(
+          cityName: params.cityName,
+        ),
+        apiKey);
   }
 }

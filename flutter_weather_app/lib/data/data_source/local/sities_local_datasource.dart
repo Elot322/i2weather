@@ -15,17 +15,19 @@ abstract class CitiesLocalDatasource {
 }
 
 class CitiesLocalDatasourceImpl extends CitiesLocalDatasource {
+  final SharedPreferences prefs;
+
+  CitiesLocalDatasourceImpl({required this.prefs});
+
   @override
   Future<List<String>> getFavorietesCities() async {
-    final localData = await SharedPreferences.getInstance();
-    final cities = localData.getStringList(CITIES_PREF) ?? [];
+    final cities = prefs.getStringList(CITIES_PREF) ?? [];
     return cities;
   }
 
   @override
   Future<CityModel> getMainCity() async {
-    final localData = await SharedPreferences.getInstance();
-    final mainCity = localData.getString(MAIN_PREF);
+    final mainCity = prefs.getString(MAIN_PREF);
 
     if (mainCity == null) {
       throw CacheException();
@@ -36,21 +38,19 @@ class CitiesLocalDatasourceImpl extends CitiesLocalDatasource {
 
   @override
   Future<void> addToFavoritiesCities(CityModel city) async {
-    final localData = await SharedPreferences.getInstance();
-    List<String>? stringList = localData.getStringList(CITIES_PREF);
+    List<String>? stringList = prefs.getStringList(CITIES_PREF);
     if (stringList == null) {
       stringList = [];
       stringList.add(city.cityName);
-      await localData.setStringList(CITIES_PREF, stringList);
+      await prefs.setStringList(CITIES_PREF, stringList);
     } else {
       stringList.add(city.cityName);
-      await localData.setStringList(CITIES_PREF, stringList);
+      await prefs.setStringList(CITIES_PREF, stringList);
     }
   }
 
   @override
   Future setMainCity(CityModel city) async {
-    final localData = await SharedPreferences.getInstance();
-    await localData.setString(MAIN_PREF, city.cityName);
+    await prefs.setString(MAIN_PREF, city.cityName);
   }
 }

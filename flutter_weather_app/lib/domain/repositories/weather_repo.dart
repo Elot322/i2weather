@@ -8,11 +8,11 @@ import 'package:flutter_weather_app/domain/entities/hourly_forecast_entity.dart'
 
 abstract class WeatherRepository {
   Future<Either<Failure, CurrentWeatherInCityEntity>> getWeather(
-      CityEntity city);
+      CityEntity city, String apiKey);
   Future<Either<Failure, FavoriteCitiesWeatherEntity>> getFavoriteWeather(
-      CityEntity city);
+      CityEntity city, String apiKey);
   Future<Either<Failure, Set<FiveDaysForecastEntity>>> getDailyForecast(
-      CityEntity city);
+      CityEntity city, String apiKey);
   Future<Either<Failure, List<HourlyForecastEntity>>> getHourlyForecast(
-      CityEntity city);
+      CityEntity city, String apiKey);
 }

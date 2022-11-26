@@ -10,7 +10,8 @@ class GetFavoriteCities extends UseCase<List<String>, void> {
   GetFavoriteCities({required this.cityRepository});
 
   @override
-  Future<Either<Failure, List<String>>> call(params) async {
+  Future<Either<Failure, List<String>>> call(params,
+      [String apiKey = '']) async {
     return await cityRepository.getFavoriteCities();
   }
 }

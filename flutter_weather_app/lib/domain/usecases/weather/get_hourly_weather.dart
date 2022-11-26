@@ -12,9 +12,12 @@ class GetHourlyWeather extends UseCase<List<HourlyForecastEntity>, CityParams> {
   GetHourlyWeather({required this.weatherRepository});
 
   @override
-  Future<Either<Failure, List<HourlyForecastEntity>>> call(params) async {
-    return await weatherRepository.getHourlyForecast(CityEntity(
-      cityName: params.cityName,
-    ));
+  Future<Either<Failure, List<HourlyForecastEntity>>> call(params,
+      [String apiKey = '']) async {
+    return await weatherRepository.getHourlyForecast(
+        CityEntity(
+          cityName: params.cityName,
+        ),
+        apiKey);
   }
 }

@@ -12,9 +12,12 @@ class GetDailyWeather extends UseCase<Set<FiveDaysForecastEntity>, CityParams> {
   GetDailyWeather({required this.weatherRepository});
 
   @override
-  Future<Either<Failure, Set<FiveDaysForecastEntity>>> call(params) async {
-    return await weatherRepository.getDailyForecast(CityEntity(
-      cityName: params.cityName,
-    ));
+  Future<Either<Failure, Set<FiveDaysForecastEntity>>> call(params,
+      [String apiKey = '']) async {
+    return await weatherRepository.getDailyForecast(
+        CityEntity(
+          cityName: params.cityName,
+        ),
+        apiKey);
   }
 }

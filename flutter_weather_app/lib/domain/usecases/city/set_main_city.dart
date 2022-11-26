@@ -11,7 +11,7 @@ class SetMainCity extends UseCase<void, CityParams> {
   SetMainCity({required this.cityRepository});
 
   @override
-  Future<Either<Failure, void>> call(params) async {
+  Future<Either<Failure, void>> call(params, [String apiKey = '']) async {
     return await cityRepository.setCurrentCity(CityEntity(
       cityName: params.cityName,
     ));

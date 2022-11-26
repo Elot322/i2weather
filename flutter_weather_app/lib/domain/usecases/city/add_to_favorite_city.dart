@@ -11,7 +11,7 @@ class AddToFavoriteCity extends UseCase<void, CityParams> {
   AddToFavoriteCity({required this.cityRepository});
 
   @override
-  Future<Either<Failure, void>> call(params) async {
+  Future<Either<Failure, void>> call(params, [String apiKey = '']) async {
     return await cityRepository.setFavoriteCity(CityEntity(
       cityName: params.cityName,
     ));
