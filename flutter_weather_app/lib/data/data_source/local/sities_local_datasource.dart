@@ -12,6 +12,7 @@ abstract class CitiesLocalDatasource {
   Future setMainCity(CityModel city);
   Future<List<String>> getFavorietesCities();
   Future addToFavoritiesCities(CityModel city);
+  Future deleteCityFromFavorite(CityModel city);
 }
 
 class CitiesLocalDatasourceImpl extends CitiesLocalDatasource {
@@ -52,5 +53,16 @@ class CitiesLocalDatasourceImpl extends CitiesLocalDatasource {
   @override
   Future setMainCity(CityModel city) async {
     await prefs.setString(MAIN_PREF, city.cityName);
+  }
+
+  @override
+  Future<void> deleteCityFromFavorite(CityModel city) async {
+    List<String>? citiesList = prefs.getStringList(CITIES_PREF);
+    if (citiesList == null) {
+      citiesList = [];
+    } else {
+      final newList = citiesList..removeWhere((item) => item == city.cityName);
+      await prefs.setStringList(CITIES_PREF, newList);
+    }
   }
 }

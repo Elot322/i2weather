@@ -1,7 +1,7 @@
 import 'package:flutter_weather_app/domain/entities/current_weather_entity.dart';
 
 class CurrentCityWeatherModel extends CurrentWeatherInCityEntity {
-  CurrentCityWeatherModel({
+  const CurrentCityWeatherModel({
     required super.currentTemp,
     required super.feelsLikeTemp,
     required super.cloudsPercentage,
@@ -12,8 +12,8 @@ class CurrentCityWeatherModel extends CurrentWeatherInCityEntity {
 
   factory CurrentCityWeatherModel.fromJson(Map<String, dynamic> json) {
     return CurrentCityWeatherModel(
-      currentTemp: json['main']['temp'],
-      feelsLikeTemp: json['main']['feels_like'],
+      currentTemp: json['main']['temp'].toDouble(),
+      feelsLikeTemp: json['main']['feels_like'].toDouble(),
       cloudsPercentage: json['clouds']['all'],
       windSpeed: json['wind']['speed'].toDouble(),
       status: json['weather'][0]['main'],

@@ -8,7 +8,8 @@ abstract class CityRepository {
   Future<Either<Failure, CityEntity>> getCurrentCity();
   Future<Either<Failure, void>> setCurrentCity(CityEntity city);
 
-  //Get/Set favorietes cities(List cities on Main screen)
+  //Get/Set/Delete favorietes cities(List cities on Main screen)
   Future<Either<Failure, List<String>>> getFavoriteCities();
   Future<Either<Failure, void>> setFavoriteCity(CityEntity city);
+  Future<Either<Failure, void>> deleteFromFavoriteCity(CityEntity city);
 }

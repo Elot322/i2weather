@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_weather_app/domain/entities/city_entity.dart';
+import 'package:flutter_weather_app/presentation/bloc/forecast/forecast_cubit.dart';
 import 'package:flutter_weather_app/presentation/bloc/pick/pick_page_cubit.dart';
 import 'package:flutter_weather_app/presentation/bloc/pick/pick_page_state.dart';
 import 'package:flutter_weather_app/presentation/bloc/weather/weather_city_cubit.dart';
@@ -64,7 +65,7 @@ class PickCityScreen extends StatelessWidget {
                 Future.delayed(
                   const Duration(seconds: 2),
                   () {
-                    _navigateToWeatherPage(context);
+                    _navigateToWeatherPage(context, cityNameController.text);
                   },
                 );
               },
@@ -88,16 +89,27 @@ class PickCityScreen extends StatelessWidget {
     );
   }
 
-  void _navigateToWeatherPage(BuildContext context) {
+  void _navigateToWeatherPage(BuildContext context, String cityName) {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (context) => BlocProvider(
-                  create: (context) => WeatherCubit(
-                      getMainCity: serviceLocator(),
-                      getWeatherByCity: serviceLocator())
-                    ..loadWeather(),
-                  child: WeatherScreen(),
+            builder: (context) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (context) => WeatherCubit(
+                          getMainCity: serviceLocator(),
+                          getWeatherByCity: serviceLocator())
+                        ..loadWeather(),
+                    ),
+                    BlocProvider(
+                      create: (context) => ForecastCubit(
+                          getHourlyWeather: serviceLocator(),
+                          getDailyWeather: serviceLocator())
+                        ..getHourlyForecastWeather(
+                            CityEntity(cityName: cityName)),
+                    ),
+                  ],
+                  child: const WeatherScreen(),
                 )));
   }
 }

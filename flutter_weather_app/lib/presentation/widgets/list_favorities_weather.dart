@@ -1,37 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_weather_app/domain/entities/city_entity.dart';
 import 'package:flutter_weather_app/domain/entities/favorites_weather_entity.dart';
 import 'package:flutter_weather_app/presentation/bloc/favorite/favorite_weather_list_cubit.dart';
 import 'package:flutter_weather_app/presentation/bloc/favorite/favorite_weather_list_state.dart';
+import 'package:flutter_weather_app/presentation/bloc/forecast/forecast_cubit.dart';
 import 'package:flutter_weather_app/presentation/bloc/weather/weather_city_cubit.dart';
 import 'package:flutter_weather_app/presentation/pages/weather_page.dart';
 import 'package:flutter_weather_app/presentation/widgets/add_favorite_city_dialog.dart';
 import 'package:flutter_weather_app/sevice_locator.dart';
 
 class ListFavoritiesWeather extends StatelessWidget {
-  final items = 1;
-
   const ListFavoritiesWeather({super.key});
 
   @override
   Widget build(BuildContext context) {
     List<FavoriteCitiesWeatherEntity> weather = [];
     List<String> city = [];
+    int length = 0;
 
-    return BlocBuilder<FavoriteCubit, FavoriteState>(
+    return BlocConsumer<FavoriteCubit, FavoriteState>(
       builder: (context, state) {
         if (state is FavoriteLoaded) {
           weather = state.listWeather;
           city = state.listCities;
+          length = city.length;
         } else if (state is FavoriteLoading) {
           return _loadingIndicator();
         }
         return ListView.builder(
-          itemCount: city.length + 1,
+          itemCount: length + 1,
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,
           itemBuilder: (BuildContext context, int ind) {
-            if (ind == city.length) {
+            if (ind == length) {
               return SizedBox(
                 height: 100,
                 width: 130,
@@ -82,6 +84,12 @@ class ListFavoritiesWeather extends StatelessWidget {
           },
         );
       },
+      listener: (context, state) {
+        if (state is FavoriteError) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(_getSnackBar('Error! Unknown city!', Colors.red));
+        }
+      },
     );
   }
 
@@ -106,7 +114,12 @@ class ListFavoritiesWeather extends StatelessWidget {
                   title: Text('DELETE $cityName?'),
                   actions: [
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context
+                            .read<FavoriteCubit>()
+                            .deleteCity(CityEntity(cityName: cityName));
+                        Navigator.pop(context);
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                       ),
@@ -184,8 +197,18 @@ class ListFavoritiesWeather extends StatelessWidget {
     return const Padding(
       padding: EdgeInsets.all(8.0),
       child: Center(
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(
+          color: Colors.white,
+        ),
       ),
+    );
+  }
+
+  SnackBar _getSnackBar(String message, Color color) {
+    return SnackBar(
+      content: Text(message),
+      duration: const Duration(seconds: 2),
+      backgroundColor: color,
     );
   }
 
@@ -193,12 +216,22 @@ class ListFavoritiesWeather extends StatelessWidget {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => BlocProvider(
-                  create: (context) => WeatherCubit(
-                      getMainCity: serviceLocator(),
-                      getWeatherByCity: serviceLocator())
-                    ..loadWeatherByCity(city),
-                  child: WeatherScreen(),
+            builder: (context) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (context) => WeatherCubit(
+                          getMainCity: serviceLocator(),
+                          getWeatherByCity: serviceLocator())
+                        ..loadWeatherByCity(city),
+                    ),
+                    BlocProvider(
+                      create: (context) => ForecastCubit(
+                          getHourlyWeather: serviceLocator(),
+                          getDailyWeather: serviceLocator())
+                        ..getHourlyForecastWeather(CityEntity(cityName: city)),
+                    ),
+                  ],
+                  child: const WeatherScreen(),
                 )));
   }
 }

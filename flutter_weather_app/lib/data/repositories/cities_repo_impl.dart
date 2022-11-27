@@ -34,6 +34,11 @@ class CityRepositoryImpl extends CityRepository {
     return await _setFavoriteCity(CityModel(cityName: city.cityName));
   }
 
+  @override
+  Future<Either<Failure, void>> deleteFromFavoriteCity(CityEntity city) async {
+    return await _deleteFavoriteCity(CityModel(cityName: city.cityName));
+  }
+
   Future<Either<Failure, CityModel>> _getCurrentCity() async {
     try {
       final city = await citiesLocalDatasource.getMainCity();
@@ -55,7 +60,8 @@ class CityRepositoryImpl extends CityRepository {
   Future<Either<Failure, void>> _setCurrentCity(CityModel city) async {
     try {
       await citiesLocalDatasource.setMainCity(city);
-      return Right(Void);
+      // ignore: void_checks
+      return const Right(Void);
     } on CacheException {
       return Left(CacheFailure());
     }
@@ -64,7 +70,18 @@ class CityRepositoryImpl extends CityRepository {
   Future<Either<Failure, void>> _setFavoriteCity(CityModel city) async {
     try {
       await citiesLocalDatasource.addToFavoritiesCities(city);
-      return Right(Void);
+      // ignore: void_checks
+      return const Right(Void);
+    } on CacheException {
+      return Left(CacheFailure());
+    }
+  }
+
+  Future<Either<Failure, void>> _deleteFavoriteCity(CityModel city) async {
+    try {
+      await citiesLocalDatasource.deleteCityFromFavorite(city);
+      // ignore: void_checks
+      return const Right(Void);
     } on CacheException {
       return Left(CacheFailure());
     }

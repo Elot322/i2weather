@@ -8,7 +8,7 @@ class HourlyForecastModel extends HourlyForecastEntity {
     var min = json['dt_txt'].split(' ')[1].split(':')[1];
     var time = '$hour:$min';
     return HourlyForecastModel(
-      temp: json['main']['temp'],
+      temp: json['main']['temp'].toDouble(),
       time: time,
     );
   }

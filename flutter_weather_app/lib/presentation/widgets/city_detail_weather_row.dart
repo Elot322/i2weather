@@ -133,7 +133,7 @@ class CityDetailRow extends StatelessWidget {
                   size: 60,
                 ),
                 Text(
-                  '$windSpeed' + 'm/s',
+                  '${windSpeed}m/s',
                   style: const TextStyle(color: Colors.white),
                 )
               ],

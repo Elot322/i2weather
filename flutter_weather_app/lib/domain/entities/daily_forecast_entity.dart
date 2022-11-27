@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_weather_app/domain/entities/weather.dart';
 
 class FiveDaysForecastEntity extends Equatable {
   final double tempMin;

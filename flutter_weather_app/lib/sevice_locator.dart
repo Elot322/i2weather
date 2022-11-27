@@ -5,13 +5,16 @@ import 'package:flutter_weather_app/data/repositories/weather_repo_impl.dart';
 import 'package:flutter_weather_app/domain/repositories/city_repo.dart';
 import 'package:flutter_weather_app/domain/repositories/weather_repo.dart';
 import 'package:flutter_weather_app/domain/usecases/city/add_to_favorite_city.dart';
+import 'package:flutter_weather_app/domain/usecases/city/delete_city_from_favorite.dart';
 import 'package:flutter_weather_app/domain/usecases/city/get_favorite_cities.dart';
 import 'package:flutter_weather_app/domain/usecases/city/get_main_city.dart';
 import 'package:flutter_weather_app/domain/usecases/city/set_main_city.dart';
 import 'package:flutter_weather_app/domain/usecases/weather/get_weather_by_city.dart';
 import 'package:flutter_weather_app/domain/usecases/weather/get_weather_favorite_cities.dart';
 import 'package:flutter_weather_app/presentation/bloc/favorite/favorite_weather_list_cubit.dart';
+import 'package:flutter_weather_app/presentation/bloc/forecast/forecast_cubit.dart';
 import 'package:flutter_weather_app/presentation/bloc/pick/pick_page_cubit.dart';
+import 'package:flutter_weather_app/presentation/bloc/splash/splash_page_cubit.dart';
 import 'package:flutter_weather_app/presentation/bloc/weather/weather_city_cubit.dart';
 import 'package:get_it/get_it.dart';
 
@@ -26,6 +29,11 @@ Future<void> init() async {
   //Factory
   //
   //Cubits
+  serviceLocator.registerFactory(
+    () => SplashCubit(
+      getMainCity: serviceLocator(),
+    ),
+  );
   serviceLocator.registerFactory(
     () => WeatherCubit(
       getWeatherByCity: serviceLocator(),
@@ -42,8 +50,13 @@ Future<void> init() async {
       getFavoriteCities: serviceLocator(),
       getFavoriteWeatherCities: serviceLocator(),
       addToFavoriteCity: serviceLocator(),
+      deleteFromFavoriteCity: serviceLocator(),
     ),
   );
+  serviceLocator.registerFactory(() => ForecastCubit(
+        getHourlyWeather: serviceLocator(),
+        getDailyWeather: serviceLocator(),
+      ));
 
   //____________________________________________________________________________
   //Use cases.
@@ -73,6 +86,9 @@ Future<void> init() async {
         cityRepository: serviceLocator(),
       ));
   serviceLocator.registerLazySingleton(() => SetMainCity(
+        cityRepository: serviceLocator(),
+      ));
+  serviceLocator.registerLazySingleton(() => DeleteFromFavoriteCity(
         cityRepository: serviceLocator(),
       ));
 

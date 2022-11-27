@@ -1,4 +1,4 @@
-import 'package:either_dart/src/either.dart';
+import 'package:either_dart/either.dart';
 import 'package:flutter_weather_app/core/error/exception.dart';
 import 'package:flutter_weather_app/data/data_source/api/weather_api_datasource.dart';
 import 'package:flutter_weather_app/data/data_source/local/sities_local_datasource.dart';

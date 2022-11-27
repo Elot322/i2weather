@@ -12,7 +12,6 @@ class PickCityCubit extends Cubit<PickState> {
   Future<void> setCity(CityEntity entity) async {
     final cityData =
         await setMainCity.call(CityParams(cityName: entity.cityName));
-    print('stCity');
 
     cityData.fold(
         (error) => emit(const ErrorPickState(message: 'Dont write local data')),

@@ -9,7 +9,7 @@ class CurrentWeatherInCityEntity extends Equatable {
   final String status;
   final String description;
 
-  CurrentWeatherInCityEntity({
+  const CurrentWeatherInCityEntity({
     required this.currentTemp,
     required this.feelsLikeTemp,
     required this.cloudsPercentage,

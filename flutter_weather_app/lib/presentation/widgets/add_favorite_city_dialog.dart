@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_weather_app/domain/entities/city_entity.dart';
 import 'package:flutter_weather_app/presentation/bloc/favorite/favorite_weather_list_cubit.dart';
-import 'package:flutter_weather_app/presentation/bloc/favorite/favorite_weather_list_state.dart';
 
 class AddCityFavoriteDialog extends StatelessWidget {
   final TextEditingController cityNameController = TextEditingController();
@@ -53,6 +52,21 @@ class AddCityFavoriteDialog extends StatelessWidget {
           ),
           child: const Text(
             'ADD',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+          ),
+          child: const Text(
+            'CANCEL',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.black,

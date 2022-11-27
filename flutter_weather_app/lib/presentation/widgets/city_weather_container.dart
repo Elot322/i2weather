@@ -34,6 +34,10 @@ class CityWeatherContainer extends StatelessWidget {
               .showSnackBar(_getSnackBar(state.message, Colors.red));
           _navigateToPickPage(context);
         }
+        if (state is SearchedWeatherError) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(_getSnackBar('Error! City not found.', Colors.red));
+        }
       },
     );
   }
@@ -108,10 +112,12 @@ class CityWeatherContainer extends StatelessWidget {
               IconButton(
                   onPressed: () {
                     showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return SearchCityDialog();
-                        });
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return SearchCityDialog();
+                      },
+                    );
                   },
                   icon: const Icon(
                     Icons.search,
@@ -135,7 +141,9 @@ class CityWeatherContainer extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              ChangePeriodMenu(),
+              ChangePeriodMenu(
+                cityName: cityName,
+              ),
             ],
           ),
         ],

@@ -1,6 +1,4 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_weather_app/domain/entities/daily_forecast_entity.dart';
-import 'package:flutter_weather_app/domain/entities/favorites_weather_entity.dart';
 
 class FiveDaysForecastModel extends FiveDaysForecastEntity {
   const FiveDaysForecastModel(
@@ -16,10 +14,10 @@ class FiveDaysForecastModel extends FiveDaysForecastEntity {
     var date = '$day-$mouth';
 
     return FiveDaysForecastModel(
-      tempMax: json['main']['temp_max'],
-      tempMin: json['main']['tempMin'],
-      status: json['weather']['main'],
-      description: json['weather']['description'],
+      tempMax: json['main']['temp_max'].toDouble(),
+      tempMin: json['main']['temp_min'].toDouble(),
+      status: json['weather'][0]['main'],
+      description: json['weather'][0]['description'],
       dateTime: date,
     );
   }

@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_weather_app/domain/entities/favorites_weather_entity.dart';
 
 class FavoritiesCitiesWeatherModel extends FavoriteCitiesWeatherEntity {

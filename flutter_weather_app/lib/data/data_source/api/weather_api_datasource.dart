@@ -53,7 +53,6 @@ class WeatherApiDatasourceImpl extends WeatherApiDatasource {
       CityModel city, String apiKey) async {
     final String name = city.cityName;
     Uri url = Uri.parse("$baseUrl/weather?q=$name&units=metric&appid=$apiKey");
-    print(url);
 
     final response = await client.get(
       url,
@@ -62,8 +61,9 @@ class WeatherApiDatasourceImpl extends WeatherApiDatasource {
 
     if (response.statusCode == 200) {
       final currentWeather = jsonDecode(response.body);
-      print(currentWeather);
       return CurrentCityWeatherModel.fromJson(currentWeather);
+    } else if (response.statusCode == 401) {
+      throw ServerException();
     } else {
       throw ServerException();
     }
@@ -82,6 +82,7 @@ class WeatherApiDatasourceImpl extends WeatherApiDatasource {
 
     if (response.statusCode == 200) {
       final fiveDaysWeather = jsonDecode(response.body);
+
       return (fiveDaysWeather['list'] as List)
           .map((fiveDaysWeather) =>
               FiveDaysForecastModel.fromJson(fiveDaysWeather))

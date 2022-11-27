@@ -6,7 +6,9 @@ import 'package:flutter_weather_app/domain/usecases/city/get_main_city.dart';
 import 'package:flutter_weather_app/domain/usecases/weather/get_weather_by_city.dart';
 import 'package:flutter_weather_app/presentation/bloc/weather/weather_city_state.dart';
 
+// ignore: constant_identifier_names
 const SERVER_FAILURE_MESSAGE = 'Server Failure';
+// ignore: constant_identifier_names
 const CACHED_FAILURE_MESSAGE = 'Cache Failure';
 
 class WeatherCubit extends Cubit<WeatherState> {
@@ -15,13 +17,12 @@ class WeatherCubit extends Cubit<WeatherState> {
   final apiKey = const String.fromEnvironment('API_KEY');
 
   WeatherCubit({required this.getWeatherByCity, required this.getMainCity})
-      : super(WeatherEmpty());
+      : super(const WeatherEmpty());
 
   Future<void> loadWeather() async {
     emit(const WeatherLoading());
+    // ignore: void_checks
     final failureOrCity = await getMainCity.call(() {});
-    print(failureOrCity);
-    print(apiKey);
 
     failureOrCity.fold(
         (error) => emit(WeatherError(message: _mapFailureToMessage(error))),
@@ -41,7 +42,8 @@ class WeatherCubit extends Cubit<WeatherState> {
     final data =
         await getWeatherByCity.call(CityParams(cityName: city), apiKey);
     data.fold(
-        (error) => emit(WeatherError(message: _mapFailureToMessage(error))),
+        (error) =>
+            emit(SearchedWeatherError(message: _mapFailureToMessage(error))),
         (weather) {
       emit(WeatherLoaded(weather: weather, cityName: city));
     });
