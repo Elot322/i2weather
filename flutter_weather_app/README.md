@@ -1,8 +1,8 @@
-#I2WEATHER APP#
-##Description##
+# I2WEATHER APP #
+## Description ##
 This is a test task for the company. I tried to maintain a clean application architecture, and used BLoC(Cubit) for the presentation architecture. I did not refactor the code (will be updated), and also did not try hard on the UI. It turned out pretty good ;).
 Due to the workload, I spent 2 hours a day working on the project, only at night. Average project time ~ 20 hours.
-##How to start##
+## How to start ##
 1. Get repository on your computer.
 2. Run flutter pub get
 >equatable: ^2.0.5; 
